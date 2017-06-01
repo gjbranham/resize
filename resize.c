@@ -41,10 +41,6 @@ int main(int argc, char *argv[])
         return 4;
     }
     
-    ///////////////////////////////////////////////////
-    ///          The fun starts here                ///
-    ///////////////////////////////////////////////////
-    
     // Read infile's BITMAPFILEHEADER
     BITMAPFILEHEADER bf;
     fread(&bf, sizeof(BITMAPFILEHEADER), 1, infile);
@@ -62,6 +58,11 @@ int main(int argc, char *argv[])
         fprintf(stderr, "Unsupported file format.\n");
         return 4;
     }
+    
+    ///////////////////////////////////////////////////
+    ///          The fun starts here                ///
+    ///////////////////////////////////////////////////
+    
     
     // Since we will need to make changes to the header files, just copy over the old into new structs.
     // If it turns out that we get a copy of the pointers (I'm not sure that we will), then just use
@@ -125,14 +126,14 @@ int main(int argc, char *argv[])
                     //  !!!!!! if we're going from 6 pixels to 4, the 1st destination pixel needs color from source pixel 0 and 1, 
                     //  !!!!!! the 2nd dest pixel needs color from source 1 and 2, but the 3rd needs color from 3 and 4. It's
                     //  !!!!!! because of the decimal-integer-decimal counting: 0 to 1.5 to 3 to 4.5 to 6 etc. 
-                    if (fractional && (bi.biWidth%f)){
+                    if (fractional){
                         if (j==0 || j==((int)(y*f+f)-1)){
                             dx=fractional;
                         }
                     }else{
                         dx=1;
                     }
-                    if (fractional && (bi.biHeight%f)){
+                    if (fractional){
                         if (i==0 || i==((int)(x*f+f)-1)){
                             dy=fractional;
                         }
