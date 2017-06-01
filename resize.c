@@ -8,8 +8,6 @@
 
 #include "bmp.h"
 
-//void calculate_color(double dx,double dy,RGBTRIPLE triple,RGBTRIPLE* new_color);
-
 int main(int argc, char *argv[])
 {
     // ensure proper usage
@@ -19,10 +17,9 @@ int main(int argc, char *argv[])
         return 1;
     }
 
-    // remember filenames
-   // char *infile = argv[1];
-    //char *outfile = argv[2];
-    
+    ///////////////////////////////////////////////////
+    /// Basic error checking for the correct inputs ///
+    ///////////////////////////////////////////////////
     float factor = atof(argv[3]);
     
     if (factor<=0 || factor>100)
@@ -43,7 +40,11 @@ int main(int argc, char *argv[])
         fprintf(stderr,"Could not open %s for writing\n",argv[2]);
         return 4;
     }
-
+    
+    ///////////////////////////////////////////////////
+    ///          The fun starts here                ///
+    ///////////////////////////////////////////////////
+    
     // Read infile's BITMAPFILEHEADER
     BITMAPFILEHEADER bf;
     fread(&bf, sizeof(BITMAPFILEHEADER), 1, infile);
