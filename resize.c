@@ -65,8 +65,6 @@ int main(int argc, char *argv[])
     
     
     // Since we will need to make changes to the header files, just copy over the old into new structs.
-    // If it turns out that we get a copy of the pointers (I'm not sure that we will), then just use
-    // fread with the resized_ variables 
     BITMAPFILEHEADER resized_bf = bf;
     BITMAPINFOHEADER resized_bi = bi;
     
@@ -86,11 +84,12 @@ int main(int argc, char *argv[])
     fwrite(&resized_bi, sizeof(BITMAPINFOHEADER), 1, outfile);
 
     // Since our resizing rounds down, the factor f used in calculations has to be based on the actual ratio of pixels
-    float f = bi.biHeight/resized_bi.biHeight;
+    //float f = bi.biHeight/(float)resized_bi.biHeight;
+    float f = 1.0/factor;
     
     // A few variables we need
-    double dx,dy,intpart;
-    double fractional = modf(f,&intpart)/2; // Fractional component of FACTOR for calculations
+    //double dx,dy,intpart;
+    //double fractional = modf(f,&intpart)/2; // Fractional component of FACTOR for calculations
     RGBTRIPLE new_color; // temporary storage
 
     // Outer x,y loops are destination pixels. Inner i,j loops are source pixels.
@@ -117,7 +116,7 @@ int main(int argc, char *argv[])
                     // Destination pixel can be created out of partial source pixels, so we use dx and dy to account for fractions
                     
                     // Cases for dx and dy 
-                    /// !!!!!! There is a bug here. When destination width or height can be fully divided by factor F, we !!!!!!
+                    /// !!!!!! There is a bug here. When destination width or height can be fully divided by factor F, we
                     //  !!!!!! start and stop at different points depending on the count. For instance 6/1.5 = 4; the first
                     //  !!!!!! destination pixel covers source pixels 0:1.5, but the next covers 1.5:3, etc. How to set up
                     //  !!!!!! to adjust dx and dy dynamically?
